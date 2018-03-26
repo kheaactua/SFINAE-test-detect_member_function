@@ -7,3 +7,4 @@ methods](http://blog.quasardb.net/sfinae-hell-detecting-template-methods/)
 
 Tested with:
 - clang++ 5.0.1
+- Visual Studio 12 2013
