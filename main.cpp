@@ -1,6 +1,7 @@
 #include <iostream>
 #include <type_traits>
 
+template <typename T>
 class NoPPV {
    public:
     NoPPV() {
@@ -8,6 +9,7 @@ class NoPPV {
     }
 };
 
+template <typename T>
 class HasPPV {
    public:
     HasPPV() {
@@ -36,8 +38,8 @@ namespace { // {{{
 
 } // }}}
 
-static_assert(has_min_ppv<HasPPV>::value, "error");
-static_assert(!has_min_ppv<NoPPV>::value, "error");
+static_assert(has_min_ppv<HasPPV<int>>::value, "error");
+static_assert(!has_min_ppv<NoPPV<int>>::value, "error");
 
 template <typename T>
 auto PrintType() -> typename std::enable_if<has_min_ppv<T>::value, void>::type
@@ -53,10 +55,10 @@ auto PrintType() -> typename std::enable_if<!has_min_ppv<T>::value, void>::type
 
 auto main() -> int
 {
-    NoPPV t1;
+    NoPPV<int> t1;
     PrintType<decltype(t1)>();
 
-    HasPPV t2;
+    HasPPV<int> t2;
     PrintType<decltype(t2)>();
 
     return 0;
