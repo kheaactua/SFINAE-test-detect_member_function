@@ -5,6 +5,7 @@
 
 BOOST_TTI_HAS_MEMBER_FUNCTION(PPV)
 
+template <typename T>
 class NoPPV {
    public:
     NoPPV() {
@@ -12,6 +13,7 @@ class NoPPV {
     }
 };
 
+template <typename T>
 class HasPPV {
    public:
     HasPPV() {
@@ -21,8 +23,8 @@ class HasPPV {
     auto PPV() -> void {};
 };
 
-static_assert(has_member_function_PPV<HasPPV, void>::value, "Error detecting property");
-static_assert(!has_member_function_PPV<NoPPV, void>::value, "Error detecting missing property");
+static_assert(has_member_function_PPV<HasPPV<int>, void>::value, "Error detecting property");
+static_assert(!has_member_function_PPV<NoPPV<int>, void>::value, "Error detecting missing property");
 
 
 template <typename T>
@@ -39,10 +41,10 @@ auto PrintType() -> typename std::enable_if<!has_member_function_PPV<T, void>::v
 
 auto main() -> int
 {
-    NoPPV t1;
+    NoPPV<int> t1;
     PrintType<decltype(t1)>();
 
-    HasPPV t2;
+    HasPPV<int> t2;
     PrintType<decltype(t2)>();
 
     return 0;
