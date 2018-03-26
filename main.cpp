@@ -36,8 +36,8 @@ namespace { // {{{
 
 } // }}}
 
-static_assert(has_min_ppv<HasPPV>::value, "error");
-static_assert(!has_min_ppv<NoPPV>::value, "error");
+static_assert(has_min_ppv<HasPPV>::value, "Error detecting member");
+static_assert(!has_min_ppv<NoPPV>::value, "Error detecting missing member");
 
 template <typename T>
 auto PrintType() -> typename std::enable_if<has_min_ppv<T>::value, void>::type
