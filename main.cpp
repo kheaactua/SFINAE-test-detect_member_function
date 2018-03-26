@@ -38,8 +38,8 @@ namespace { // {{{
 
 } // }}}
 
-static_assert(has_min_ppv<HasPPV<int>>::value, "error");
-static_assert(!has_min_ppv<NoPPV<int>>::value, "error");
+static_assert(has_min_ppv<HasPPV<int>>::value, "Error detecting property");
+static_assert(!has_min_ppv<NoPPV<int>>::value, "Error detecting missing property");
 
 template <typename T>
 auto PrintType() -> typename std::enable_if<has_min_ppv<T>::value, void>::type
