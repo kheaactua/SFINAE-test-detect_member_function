@@ -24,22 +24,17 @@ namespace { // {{{
     template <typename T>
     struct has_min_ppv
     {
-		template <class, class> class checker;
+		struct dummy { /* something */ };
 
-#ifndef WIN32
-        template <typename C>
-        static std::true_type test(checker<C, decltype(std::declval<C>().PPV(dummy()))> *);
-#else
-        template <typename C>
-        static std::true_type test(checker<C, decltype(&C::PPV)> *);
-#endif
+		template <typename C, typename P>
+		static auto test(P * p) -> decltype(std::declval<C>().PPV(*p), std::true_type());
 
-		template <typename C>
+		template <typename, typename>
 		static std::false_type test(...);
 
-		typedef decltype(test<T>(nullptr)) type;
-		static const bool value = std::is_same<std::true_type, decltype(test<T>(nullptr))>::value;
-    };
+		typedef decltype(test<T, dummy>(nullptr)) type;
+		static const bool value = std::is_same<std::true_type, decltype(test<T, dummy>(nullptr))>::value;
+	};
 
 } // }}}
 

@@ -5,6 +5,4 @@ SFINAE is annoying.  Making a repo saving working examples of detecting a member
 The code here is mostly based on [SFINAE Hell: detecting template
 methods](http://blog.quasardb.net/sfinae-hell-detecting-template-methods/)
 
-Tested with:
-- clang++ 5.0.1
-- g++ 5.4
+This current branch does not compile with clang++ (so I didn't try the others)
