@@ -26,8 +26,13 @@ namespace { // {{{
     {
 		template <class, class> class checker;
 
-		template <typename C>
-		static std::true_type test(checker<C, decltype(&C::PPV)> *);
+#ifndef WIN32
+        template <typename C>
+        static std::true_type test(checker<C, decltype(std::declval<C>().PPV(dummy()))> *);
+#else
+        template <typename C>
+        static std::true_type test(checker<C, decltype(&C::PPV)> *);
+#endif
 
 		template <typename C>
 		static std::false_type test(...);
