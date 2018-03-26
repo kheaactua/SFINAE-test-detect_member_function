@@ -7,5 +7,3 @@ methods](http://blog.quasardb.net/sfinae-hell-detecting-template-methods/)
 
 Tested with:
 - clang++ 5.0.1
-- g++ 5.4
-- MSVC 12 2013: Does not compile

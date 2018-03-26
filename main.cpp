@@ -1,7 +1,10 @@
 #include <iostream>
 #include <type_traits>
 
-template <typename T>
+#include <boost/tti/has_member_function.hpp>
+
+BOOST_TTI_HAS_MEMBER_FUNCTION(PPV)
+
 class NoPPV {
    public:
     NoPPV() {
@@ -9,7 +12,6 @@ class NoPPV {
     }
 };
 
-template <typename T>
 class HasPPV {
    public:
     HasPPV() {
@@ -19,51 +21,28 @@ class HasPPV {
     auto PPV() -> void {};
 };
 
-namespace { // {{{
+static_assert(has_member_function_PPV<HasPPV, void>::value, "Error detecting property");
+static_assert(!has_member_function_PPV<NoPPV, void>::value, "Error detecting missing property");
 
-    template <typename T>
-    struct has_min_ppv
-    {
-		template <class, class> class checker;
-
-#ifndef WIN32
-        template <typename C>
-        static std::true_type test(checker<C, decltype(std::declval<C>().PPV(dummy()))> *);
-#else
-        template <typename C>
-        static std::true_type test(checker<C, decltype(&C::PPV)> *);
-#endif
-
-		template <typename C>
-		static std::false_type test(...);
-
-		typedef decltype(test<T>(nullptr)) type;
-		static const bool value = std::is_same<std::true_type, decltype(test<T>(nullptr))>::value;
-    };
-
-} // }}}
-
-static_assert(has_min_ppv<HasPPV<int>>::value, "Error detecting property");
-static_assert(!has_min_ppv<NoPPV<int>>::value, "Error detecting missing property");
 
 template <typename T>
-auto PrintType() -> typename std::enable_if<has_min_ppv<T>::value, void>::type
+auto PrintType() -> typename std::enable_if<has_member_function_PPV<T, void>::value, void>::type
 {
     std::cout << "Choose object WITH ppv" << std::endl;
 }
 
 template <typename T>
-auto PrintType() -> typename std::enable_if<!has_min_ppv<T>::value, void>::type
+auto PrintType() -> typename std::enable_if<!has_member_function_PPV<T, void>::value, void>::type
 {
     std::cout << "Choose object WITHOUT ppv" << std::endl;
 }
 
 auto main() -> int
 {
-    NoPPV<int> t1;
+    NoPPV t1;
     PrintType<decltype(t1)>();
 
-    HasPPV<int> t2;
+    HasPPV t2;
     PrintType<decltype(t2)>();
 
     return 0;
