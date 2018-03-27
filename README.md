@@ -5,4 +5,5 @@ This relies on [Boost TTI](http://www.boost.org/doc/libs/1_56_0/libs/tti/doc/htm
 
 Tested with:
 - clang++ 5.0.1
+- g++ 4.8
 - Visual Studio 12 2013
